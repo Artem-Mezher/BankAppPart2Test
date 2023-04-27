@@ -1,15 +1,15 @@
 package com.example.BankApp;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
 import java.util.Optional;
-
 @Service
-@RequiredArgsConstructor
 public class UserAccountService {
 
     private final UserAccountRepository userAccountRepository;
+
+    public UserAccountService(UserAccountRepository userAccountRepository) {
+        this.userAccountRepository = userAccountRepository;
+    }
 
     public Double getBalance(Long userId) {
         Optional<User> userAccount = userAccountRepository.findById(userId);
@@ -42,4 +42,5 @@ public class UserAccountService {
         return -1.0;
     }
 }
+
 

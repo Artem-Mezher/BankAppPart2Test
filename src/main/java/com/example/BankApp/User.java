@@ -5,28 +5,29 @@ import jakarta.persistence.*;
 
 
 @Entity
-@Table(name = "user_account")
+@Table(name = "user_accounts")
 public class User {
+
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(name = "user_id")
+    private Long userId;
 
     @Column(name = "balance")
-    private double balance;
+    private Double balance;
 
-    public Long getId() {
-        return id;
+    public User() {}
+
+    public User(Long userId, Double balance) {
+        this.userId = userId;
+        this.balance = balance;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public double getBalance() {
+    public Double getBalance() {
         return balance;
     }
 
-    public void setBalance(double balance) {
+    public void setBalance(Double balance) {
         this.balance = balance;
     }
 }
+

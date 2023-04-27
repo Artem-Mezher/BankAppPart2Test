@@ -1,56 +1,31 @@
 package com.example.BankApp;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Optional;
-
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/user")
 public class UserController {
 
-    @Autowired
-    private UserAccountRepository userRepository;
+    private final UserAccountService userAccountService;
+
+    public UserController(UserAccountService userAccountService) {
+        this.userAccountService = userAccountService;
+    }
 
     @GetMapping("/{userId}/balance")
-    public ResponseEntity<Double> getBalance(@PathVariable Long userId) {
-        Optional<User> user = userRepository.findById(userId);
-        if (user.isPresent()) {
-            return ResponseEntity.ok(user.get().getBalance());
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+    public Double getBalance(@PathVariable Long userId) throws UserNotFoundException {
+        return userAccountService.getBalance(userId);
     }
 
-    @PostMapping("/{userId}/take")
-    public ResponseEntity<Double> takeMoney(@PathVariable Long userId, @RequestParam Double amount) {
-        Optional<User> user = userRepository.findById(userId);
-        if (user.isPresent()) {
-            Double balance = user.get().getBalance();
-            if (balance >= amount) {
-                user.get().setBalance(balance - amount);
-                userRepository.save(user.get());
-                return ResponseEntity.ok(user.get().getBalance());
-            } else {
-                return ResponseEntity.badRequest().build();
-            }
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+    @PostMapping("/{userId}/take-money")
+    public Double takeMoney(@PathVariable Long userId, @RequestBody Double amount) throws UserNotFoundException, InsufficientFundsException {
+        return userAccountService.takeMoney(userId, amount);
     }
 
-    @PostMapping("/{userId}/put")
-    public ResponseEntity<Double> putMoney(@PathVariable Long userId, @RequestParam Double amount) {
-        Optional<User> user = userRepository.findById(userId);
-        if (user.isPresent()) {
-            Double balance = user.get().getBalance();
-            user.get().setBalance(balance + amount);
-            userRepository.save(user.get());
-            return ResponseEntity.ok(user.get().getBalance());
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+    @PostMapping("/{userId}/put-money")
+    public Double putMoney(@PathVariable Long userId, @RequestBody Double amount) throws UserNotFoundException {
+        return userAccountService.putMoney(userId, amount);
     }
 }
+
 
