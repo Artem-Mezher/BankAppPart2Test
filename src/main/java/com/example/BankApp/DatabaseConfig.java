@@ -11,7 +11,7 @@ public class DatabaseConfig {
 
     public DatabaseConfig() {
         properties = new Properties();
-        try (InputStream input = new FileInputStream("database.properties")) {
+        try (InputStream input = new FileInputStream("application.properties")) {
             properties.load(input);
         } catch (IOException e) {
             e.printStackTrace();
@@ -19,14 +19,14 @@ public class DatabaseConfig {
     }
 
     public String getUrl() {
-        return properties.getProperty("db.url");
+        return properties.getProperty("spring.datasource.url");
     }
 
     public String getUsername() {
-        return properties.getProperty("db.username");
+        return properties.getProperty("spring.datasource.username");
     }
 
     public String getPassword() {
-        return properties.getProperty("db.password");
+        return properties.getProperty("spring.datasource.password");
     }
 }
