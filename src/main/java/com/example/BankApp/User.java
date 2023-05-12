@@ -29,5 +29,8 @@ public class User {
     public void setBalance(Double balance) {
         this.balance = balance;
     }
-}
 
+    public Long getUserId() {
+        return null;
+    }
+}
